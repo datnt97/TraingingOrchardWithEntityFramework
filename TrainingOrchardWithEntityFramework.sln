@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE653461-7150-47A8-9E60-391B79B3DDFF}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eTweb.Data", "eTweb.Data", "{A9349002-FAE5-43BE-B52F-41B10D3AB40B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eTweb.Modules", "eTweb.Modules", "{C6C6AC62-2A57-4989-8D1E-6C16CF9B3536}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingOcWithEntityFramework", "src\Tweb.Cms.Web\TrainingOcWithEntityFramework\TrainingOcWithEntityFramework.csproj", "{2FD3C055-9E4F-44D9-9355-9336350F42DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.Data", "src\Tweb.Modules\eTweb.Data\eTweb.Data.csproj", "{1FAFA7E2-D224-4B70-8545-500C14E6225B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.Application", "src\Tweb.Modules\eTweb.Application\eTweb.Application.csproj", "{80CD773D-380D-4A26-98B9-58F99A3C69FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FD3C055-9E4F-44D9-9355-9336350F42DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD3C055-9E4F-44D9-9355-9336350F42DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD3C055-9E4F-44D9-9355-9336350F42DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD3C055-9E4F-44D9-9355-9336350F42DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FAFA7E2-D224-4B70-8545-500C14E6225B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FAFA7E2-D224-4B70-8545-500C14E6225B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FAFA7E2-D224-4B70-8545-500C14E6225B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FAFA7E2-D224-4B70-8545-500C14E6225B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80CD773D-380D-4A26-98B9-58F99A3C69FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80CD773D-380D-4A26-98B9-58F99A3C69FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80CD773D-380D-4A26-98B9-58F99A3C69FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80CD773D-380D-4A26-98B9-58F99A3C69FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A9349002-FAE5-43BE-B52F-41B10D3AB40B} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
+		{C6C6AC62-2A57-4989-8D1E-6C16CF9B3536} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
+		{1FAFA7E2-D224-4B70-8545-500C14E6225B} = {A9349002-FAE5-43BE-B52F-41B10D3AB40B}
+		{80CD773D-380D-4A26-98B9-58F99A3C69FC} = {C6C6AC62-2A57-4989-8D1E-6C16CF9B3536}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA7EEA56-47A3-4094-8F41-F69DE07F27B6}
+	EndGlobalSection
+EndGlobal
