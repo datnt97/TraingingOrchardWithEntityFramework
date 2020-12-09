@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.Utilities", "src\Tweb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.ViewModels", "src\Tweb.Modules\eTweb.ViewModels\eTweb.ViewModels.csproj", "{ABC8D122-FDE1-4543-90A3-2D4B0835CAB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.BackenApi", "src\Tweb.WebApi\eTweb.BackenApi\eTweb.BackenApi.csproj", "{F006D3E6-AA59-4831-B3E1-34CE04E7C158}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{ABC8D122-FDE1-4543-90A3-2D4B0835CAB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABC8D122-FDE1-4543-90A3-2D4B0835CAB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABC8D122-FDE1-4543-90A3-2D4B0835CAB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{93A14FF4-A706-46C4-8EC0-E10F81DA70DF} = {2F13CC50-3B4C-477E-B9F1-906BAA963675}
 		{4FCE0854-70DB-4812-9B85-E008F5717914} = {C6C6AC62-2A57-4989-8D1E-6C16CF9B3536}
 		{ABC8D122-FDE1-4543-90A3-2D4B0835CAB6} = {A9349002-FAE5-43BE-B52F-41B10D3AB40B}
+		{F006D3E6-AA59-4831-B3E1-34CE04E7C158} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA7EEA56-47A3-4094-8F41-F69DE07F27B6}

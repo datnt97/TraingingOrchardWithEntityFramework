@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tweb.Modules\eTweb.Application\eTweb.Application.csproj" />
+    <ProjectReference Include="..\..\Tweb.Modules\eTweb.Data\eTweb.Data.csproj" />
+    <ProjectReference Include="..\..\Tweb.Modules\eTweb.Utilities\eTweb.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

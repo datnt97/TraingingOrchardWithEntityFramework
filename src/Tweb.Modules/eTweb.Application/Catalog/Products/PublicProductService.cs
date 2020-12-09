@@ -10,13 +10,44 @@ using eTweb.ViewModels.Catalog.Products;
 
 namespace eTweb.Application.Catalog.Products
 {
-    public class PublicProductService : IPubishProductService
+    public class PublicProductService : IPubicProductService
     {
         private readonly eTwebDbContext _context;
         public PublicProductService(eTwebDbContext context)
         {
             _context = context;
         }
+
+        public async Task<List<ProductViewModel>> GetAll()
+        {
+            var query = from p in _context.Products
+                        join pt in _context.ProductTranslations on p.Id equals pt.ProductId
+                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        select new { p, pt, pic };
+
+            var data = await query
+                .Select(x => new ProductViewModel()
+                {
+                    Id = x.p.Id,
+                    Price = x.p.Price,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount,
+                    DateCreated = x.p.DateCreated,
+                    Description = x.pt.Description,
+                    SeoDescription = x.pt.SeoDescription,
+                    Details = x.pt.Details,
+                    Name = x.pt.Name,
+                    LanguageId = x.pt.LanguageId,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoTitle = x.pt.SeoTitle
+                })
+                .ToListAsync();
+
+            return data;
+        }
+
         public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request)
         {
             // 1. Select join
