@@ -1,5 +1,6 @@
 ﻿using eTweb.Data.Configuarations;
 using eTweb.Data.Entities;
+using eTweb.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,9 @@ namespace eTweb.Data.EF
 
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
+
+            // Data seeding 
+            modelBuilder.Seed();
         }
 
         public DbSet<Product> Products { get; set; }
