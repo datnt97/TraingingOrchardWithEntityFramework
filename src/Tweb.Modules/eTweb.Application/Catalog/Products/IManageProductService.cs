@@ -1,6 +1,5 @@
 ﻿using eTweb.Application.Dtos;
 using eTweb.ViewModels.Catalog.Products;
-using eTweb.ViewModels.Catalog.Products.Manage;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

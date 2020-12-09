@@ -10,7 +10,6 @@ using System.Linq;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using eTweb.ViewModels.Catalog.Products;
-using eTweb.ViewModels.Catalog.Products.Manage;
 using Microsoft.AspNetCore.Http;
 using eTweb.Application.Common;
 using System.Net.Http.Headers;

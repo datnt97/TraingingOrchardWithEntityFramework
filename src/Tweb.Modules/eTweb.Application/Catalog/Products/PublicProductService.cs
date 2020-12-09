@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using eTweb.ViewModels.Catalog.Products;
-using eTweb.ViewModels.Catalog.Products.Public;
 
 namespace eTweb.Application.Catalog.Products
 {

@@ -1,7 +1,6 @@
 ﻿
 using eTweb.Application.Dtos;
 using eTweb.ViewModels.Catalog.Products;
-using eTweb.ViewModels.Catalog.Products.Public;
 using System;
 using System.Collections.Generic;
 using System.Text;

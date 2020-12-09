@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace eTweb.ViewModels.Catalog.Products.Manage
+namespace eTweb.ViewModels.Catalog.Products
 {
     public class ProductCreateRequest
     {
