@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Tweb.Modules\eTweb.Application\eTweb.Application.csproj" />
     <ProjectReference Include="..\..\Tweb.Modules\eTweb.Data\eTweb.Data.csproj" />
     <ProjectReference Include="..\..\Tweb.Modules\eTweb.Utilities\eTweb.Utilities.csproj" />

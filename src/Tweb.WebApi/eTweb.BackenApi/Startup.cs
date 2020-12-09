@@ -35,6 +35,7 @@ namespace eTweb.BackenApi
 
 
             services.AddControllersWithViews();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +57,14 @@ namespace eTweb.BackenApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eTweb V1");
+            });
+
 
             app.UseEndpoints(endpoints =>
             {
