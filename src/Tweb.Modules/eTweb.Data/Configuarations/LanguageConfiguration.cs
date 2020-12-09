@@ -11,19 +11,20 @@ namespace eTweb.Data.Configuarations
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder
-                .ToTable("Languages");
+            builder.ToTable("Languages");
+
+            builder.HasKey(x => x.Id);
 
             builder
-                .HasKey(x => x.Id);
+                .Property(x => x.Id)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasMaxLength(5);
 
             builder
-                .HasMany(pt => pt.ProductTranslations)
-                .WithOne();
-
-            builder
-                .HasMany(ct => ct.CategoryTranslations)
-                .WithOne();
+                .Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(20);
         }
     }
 }
