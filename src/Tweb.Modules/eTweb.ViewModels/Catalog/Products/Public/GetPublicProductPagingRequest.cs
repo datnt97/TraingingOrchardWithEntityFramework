@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace eTweb.Application.Catalog.Dtos.Public
+namespace eTweb.ViewModels.Catalog.Products.Public
 {
     public class GetPublicProductPagingRequest : PagingRequestBase
     {

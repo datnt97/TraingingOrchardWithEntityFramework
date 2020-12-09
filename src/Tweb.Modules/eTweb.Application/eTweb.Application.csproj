@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eTweb.Data\eTweb.Data.csproj" />
     <ProjectReference Include="..\eTweb.Utilities\eTweb.Utilities.csproj" />
+    <ProjectReference Include="..\eTweb.ViewModels\eTweb.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

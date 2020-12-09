@@ -1,14 +1,13 @@
-﻿using eTweb.Application.Catalog.Dtos;
-using eTweb.Application.Catalog.Dtos.Public;
-using eTweb.Application.Dtos;
+﻿using eTweb.Application.Dtos;
 using eTweb.Data.EF;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using eTweb.Application.Catalog.Dtos.Manage;
 using Microsoft.EntityFrameworkCore;
+using eTweb.ViewModels.Catalog.Products;
+using eTweb.ViewModels.Catalog.Products.Public;
 
 namespace eTweb.Application.Catalog.Products
 {

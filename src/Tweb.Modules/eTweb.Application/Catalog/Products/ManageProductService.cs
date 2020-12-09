@@ -1,6 +1,4 @@
-﻿using eTweb.Application.Catalog.Dtos;
-using eTweb.Application.Catalog.Dtos.Manage;
-using eTweb.Application.Dtos;
+﻿using eTweb.Application.Dtos;
 using eTweb.Data.EF;
 using eTweb.Data.Entities;
 using eTweb.Utilities.Exceptions;
@@ -10,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using eTweb.ViewModels.Catalog.Products;
+using eTweb.ViewModels.Catalog.Products.Manage;
 
 namespace eTweb.Application.Catalog.Products
 {

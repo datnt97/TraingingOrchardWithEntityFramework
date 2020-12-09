@@ -1,6 +1,6 @@
-﻿using eTweb.Application.Catalog.Dtos;
-using eTweb.Application.Catalog.Dtos.Manage;
-using eTweb.Application.Dtos;
+﻿using eTweb.Application.Dtos;
+using eTweb.ViewModels.Catalog.Products;
+using eTweb.ViewModels.Catalog.Products.Manage;
 using System;
 using System.Collections.Generic;
 using System.Text;
