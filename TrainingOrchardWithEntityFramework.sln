@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eTweb.Themes", "eTweb.Theme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaterialDesignTheme", "src\Tweb.Themes\OrchardSkills.OrchardCore.MaterialDesignTheme\MaterialDesignTheme.csproj", "{93A14FF4-A706-46C4-8EC0-E10F81DA70DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.Utilities", "src\Tweb.Modules\eTweb.Utilities\eTweb.Utilities.csproj", "{4FCE0854-70DB-4812-9B85-E008F5717914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{93A14FF4-A706-46C4-8EC0-E10F81DA70DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93A14FF4-A706-46C4-8EC0-E10F81DA70DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93A14FF4-A706-46C4-8EC0-E10F81DA70DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FCE0854-70DB-4812-9B85-E008F5717914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FCE0854-70DB-4812-9B85-E008F5717914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FCE0854-70DB-4812-9B85-E008F5717914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FCE0854-70DB-4812-9B85-E008F5717914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{80CD773D-380D-4A26-98B9-58F99A3C69FC} = {C6C6AC62-2A57-4989-8D1E-6C16CF9B3536}
 		{2F13CC50-3B4C-477E-B9F1-906BAA963675} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
 		{93A14FF4-A706-46C4-8EC0-E10F81DA70DF} = {2F13CC50-3B4C-477E-B9F1-906BAA963675}
+		{4FCE0854-70DB-4812-9B85-E008F5717914} = {C6C6AC62-2A57-4989-8D1E-6C16CF9B3536}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA7EEA56-47A3-4094-8F41-F69DE07F27B6}
