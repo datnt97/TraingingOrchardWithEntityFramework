@@ -12,13 +12,13 @@ namespace eTweb.Data.Entities
 
         public string ImagePath { get; set; }
 
-        public string Caption { get; set; }
+        public string Caption { get; set; } //Alt of the product's image
 
         public bool IsDefault { get; set; }
 
         public DateTime DateCreated { get; set; }
 
-        public int SortOrder { get; set; }
+        public int SortOrder { get; set; } // Thứ tự
 
         public long FileSize { get; set; }
 
