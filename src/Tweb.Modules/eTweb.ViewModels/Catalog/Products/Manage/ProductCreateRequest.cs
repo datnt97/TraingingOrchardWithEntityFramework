@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace eTweb.ViewModels.Catalog.Products.Manage
 {
@@ -22,5 +23,6 @@ namespace eTweb.ViewModels.Catalog.Products.Manage
 
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
+        public IFormFile ThumbnailImage { get; set; }
     }
 }

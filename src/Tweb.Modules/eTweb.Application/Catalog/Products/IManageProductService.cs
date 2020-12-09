@@ -1,6 +1,7 @@
 ﻿using eTweb.Application.Dtos;
 using eTweb.ViewModels.Catalog.Products;
 using eTweb.ViewModels.Catalog.Products.Manage;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,8 +15,15 @@ namespace eTweb.Application.Catalog.Products
         Task<int> Update(ProductUpdateRequest request);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addedQuantity);
-        Task UpdateViewcount(int productId);
+        Task AddViewcount(int productId);
         Task<int> Delete(int productId);
+        Task<int> AddImages(int productId, List<IFormFile> files);
+
+        Task<int> RemoveImages(int imageId);
+
+        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
+
+        Task<List<ProductImageViewModel>> GetListImage(int productId);
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
     }
 }
