@@ -1,4 +1,5 @@
 ﻿using eTweb.Application.Dtos;
+using eTweb.ViewModels.Catalog.ProductImages;
 using eTweb.ViewModels.Catalog.Products;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -8,22 +9,41 @@ using System.Threading.Tasks;
 
 namespace eTweb.Application.Catalog.Products
 {
-    public interface IManageProductService 
+    public interface IManageProductService
     {
         Task<int> Create(ProductCreateRequest request);
+
         Task<int> Update(ProductUpdateRequest request);
+
         Task<bool> UpdatePrice(int productId, decimal newPrice);
+
         Task<bool> UpdateStock(int productId, int addedQuantity);
+
         Task AddViewcount(int productId);
+
         Task<int> Delete(int productId);
-        Task<int> AddImages(int productId, List<IFormFile> files);
 
-        Task<int> RemoveImages(int imageId);
-
-        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
-
-        Task<List<ProductImageViewModel>> GetListImage(int productId);
-        Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
         Task<ProductViewModel> GetById(int productId, string languageId);
+
+        Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
+
+        Task<int> AddImage(int productId, ProductImageCreateRequest request);
+
+        /// <summary>
+        /// Updates the image of this product
+        /// </summary>
+        /// <param name="productId">The product id.</param>
+        /// <param name="imageId">The image id</param>
+        /// <param name="request">Image model that to update this image.</param>
+        /// <returns>
+        /// The number of images has been updated.
+        /// </returns>
+        Task<int> UpdateImage(int productId, int imageId, ProductImageUpdateRequest request);
+
+        Task<int> RemoveImage(int productId, int imageId);
+
+        Task<ProductImageViewModel> GetImageById(int imageId);
+
+        Task<List<ProductImageViewModel>> GetListImages(int productId);
     }
 }
