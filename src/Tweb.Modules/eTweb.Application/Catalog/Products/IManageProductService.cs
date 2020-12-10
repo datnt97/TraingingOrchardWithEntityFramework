@@ -24,5 +24,6 @@ namespace eTweb.Application.Catalog.Products
 
         Task<List<ProductImageViewModel>> GetListImage(int productId);
         Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
+        Task<ProductViewModel> GetById(int productId, string languageId);
     }
 }

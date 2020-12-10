@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\Tweb.Modules\eTweb.Utilities\eTweb.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\user-content\" />
+  </ItemGroup>
+
 </Project>
