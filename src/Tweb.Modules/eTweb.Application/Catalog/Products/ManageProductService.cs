@@ -83,7 +83,7 @@ namespace eTweb.Application.Catalog.Products
             var product = await _context.Products.FindAsync(request.Id);
             var productTranslations = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id && x.LanguageId == request.LanguageId);
 
-            if (product == null || productTranslations == null) throw new ProductNotFoundException($"Cannot find a product with id: {request.Id}");
+            if (product == null || productTranslations == null) throw new eTwebException($"Cannot find a product with id: {request.Id}");
 
             productTranslations.Name = request.Name;
             productTranslations.Description = request.Description;
@@ -111,7 +111,7 @@ namespace eTweb.Application.Catalog.Products
         {
             var product = await _context.Products.FindAsync(productId);
 
-            if (product == null) throw new ProductNotFoundException($"Cannot find a product with id: {productId}");
+            if (product == null) throw new eTwebException($"Cannot find a product with id: {productId}");
 
             product.Price = newPrice;
 
@@ -122,7 +122,7 @@ namespace eTweb.Application.Catalog.Products
         {
             var product = await _context.Products.FindAsync(productId);
 
-            if (product == null) throw new ProductNotFoundException($"Cannot find a product with id: {productId}");
+            if (product == null) throw new eTwebException($"Cannot find a product with id: {productId}");
 
             product.Stock += addedQuantity;
             return await _context.SaveChangesAsync() > 0;
@@ -138,7 +138,7 @@ namespace eTweb.Application.Catalog.Products
         public async Task<int> Delete(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
-            if (product == null) throw new ProductNotFoundException($"Cannit find a product with id: {productId}");
+            if (product == null) throw new eTwebException($"Cannit find a product with id: {productId}");
 
             // Delete images
             var images = _context.ProductImages.Where(pi => pi.ProductId == productId);
@@ -269,7 +269,7 @@ namespace eTweb.Application.Catalog.Products
             var productImage = await _context.ProductImages.FindAsync(imageId);
 
             if (productImage == null)
-                throw new ProductNotFoundException($"Cannot find a ProductImage with id: {imageId}");
+                throw new eTwebException($"Cannot find a ProductImage with id: {imageId}");
 
             if (request.ImageFile != null)
             {
@@ -287,7 +287,7 @@ namespace eTweb.Application.Catalog.Products
             var productImage = await _context.ProductImages.FindAsync(imageId);
 
             if (productImage == null)
-                throw new ProductNotFoundException($"Cannot find a Product Image with id: {imageId}");
+                throw new eTwebException($"Cannot find a Product Image with id: {imageId}");
 
             _context.ProductImages.Remove(productImage);
 
@@ -299,7 +299,7 @@ namespace eTweb.Application.Catalog.Products
             var productImage = await _context.ProductImages.FindAsync(imageId);
 
             if (productImage == null)
-                throw new ProductNotFoundException($"Cannot find a product image with id: {imageId}");
+                throw new eTwebException($"Cannot find a product image with id: {imageId}");
 
             var viewModel = new ProductImageViewModel()
             {

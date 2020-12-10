@@ -4,15 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using eTweb.Application.Catalog.Products;
 using eTweb.Application.Common;
+using eTweb.Application.System;
 using eTweb.Data.EF;
+using eTweb.Data.Entities;
 using eTweb.Utilities.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace eTweb.BackenApi
 {
@@ -31,11 +35,22 @@ namespace eTweb.BackenApi
             services.AddDbContext<eTwebDbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstant.MainConnection)));
 
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<eTwebDbContext>()
+                .AddDefaultTokenProviders();
+
+            IdentityModelEventSource.ShowPII = true;
+
             // Declare DI
             services.AddTransient<IPubicProductService, PublicProductService>();
             services.AddTransient<IManageProductService, ManageProductService>();
             services.AddTransient<IStorageService, FileStorageService>();
 
+
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddControllersWithViews();
             services.AddSwaggerGen();
@@ -67,7 +82,6 @@ namespace eTweb.BackenApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eTweb V1");
             });
-
 
             app.UseEndpoints(endpoints =>
             {
