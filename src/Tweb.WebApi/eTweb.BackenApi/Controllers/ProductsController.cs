@@ -9,6 +9,7 @@ using eTweb.BackenApi.Models;
 using eTweb.Application.Catalog.Products;
 using eTweb.ViewModels.Catalog.Products;
 using eTweb.ViewModels.Catalog.ProductImages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eTweb.BackenApi.Controllers
 {
@@ -18,6 +19,7 @@ namespace eTweb.BackenApi.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IPubicProductService _publicProductService;
@@ -49,7 +51,7 @@ namespace eTweb.BackenApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("{languageId}")]
-        public async Task<IActionResult> GetAllPaging(string languageId, [FromForm] GetPublicProductPagingRequest request)
+        public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery] GetPublicProductPagingRequest request)
         {
             var products = await _publicProductService.GetAllByCategoryId(languageId, request);
 
