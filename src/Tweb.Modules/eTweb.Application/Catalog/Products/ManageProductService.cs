@@ -13,6 +13,7 @@ using eTweb.ViewModels.Catalog.Products;
 using Microsoft.AspNetCore.Http;
 using eTweb.Application.Common;
 using System.Net.Http.Headers;
+using eTweb.ViewModels.Catalog.ProductImages;
 
 namespace eTweb.Application.Catalog.Products
 {
@@ -20,6 +21,7 @@ namespace eTweb.Application.Catalog.Products
     {
         private readonly eTwebDbContext _context;
         private readonly IStorageService _storageService;
+
         public ManageProductService(
             eTwebDbContext context,
             IStorageService storageService)
@@ -27,6 +29,7 @@ namespace eTweb.Application.Catalog.Products
             _context = context;
             _storageService = storageService;
         }
+
         public async Task<int> Create(ProductCreateRequest request)
         {
             var product = new Product()
@@ -74,11 +77,12 @@ namespace eTweb.Application.Catalog.Products
 
             return product.Id;
         }
+
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.Id);
             var productTranslations = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id && x.LanguageId == request.LanguageId);
-            
+
             if (product == null || productTranslations == null) throw new ProductNotFoundException($"Cannot find a product with id: {request.Id}");
 
             productTranslations.Name = request.Name;
@@ -103,6 +107,34 @@ namespace eTweb.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> UpdatePrice(int productId, decimal newPrice)
+        {
+            var product = await _context.Products.FindAsync(productId);
+
+            if (product == null) throw new ProductNotFoundException($"Cannot find a product with id: {productId}");
+
+            product.Price = newPrice;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> UpdateStock(int productId, int addedQuantity)
+        {
+            var product = await _context.Products.FindAsync(productId);
+
+            if (product == null) throw new ProductNotFoundException($"Cannot find a product with id: {productId}");
+
+            product.Stock += addedQuantity;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task AddViewcount(int productId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            product.ViewCount += 1;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<int> Delete(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -110,9 +142,9 @@ namespace eTweb.Application.Catalog.Products
 
             // Delete images
             var images = _context.ProductImages.Where(pi => pi.ProductId == productId);
-            if(images.Count() > 0)
+            if (images.Count() > 0)
             {
-                foreach(var image in images)
+                foreach (var image in images)
                 {
                     await _storageService.DeleteFileAsync(image.ImagePath);
                 }
@@ -121,6 +153,31 @@ namespace eTweb.Application.Catalog.Products
             _context.Products.Remove(product);
 
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(pt => pt.Id == productId && pt.LanguageId == languageId);
+
+            var productViewModel = new ProductViewModel()
+            {
+                Id = product.Id,
+                Price = product.Price,
+                OriginalPrice = product.OriginalPrice,
+                Stock = product.Stock,
+                ViewCount = product.ViewCount,
+                DateCreated = product.DateCreated,
+                Name = productTranslation != null ? productTranslation.Name : null,
+                Description = productTranslation != null ? productTranslation.Description : null,
+                Details = productTranslation != null ? productTranslation.Details : null,
+                SeoAlias = productTranslation != null ? productTranslation.SeoAlias : null,
+                SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
+                SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
+                LanguageId = productTranslation != null ? productTranslation.LanguageId : null,
+            };
+
+            return productViewModel;
         }
 
         public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request)
@@ -143,7 +200,7 @@ namespace eTweb.Application.Catalog.Products
                 query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
             }
 
-            // 3. Paging 
+            // 3. Paging
             int totalRow = await query.CountAsync();
 
             var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
@@ -175,54 +232,7 @@ namespace eTweb.Application.Catalog.Products
             return pagedResult;
         }
 
-        public async Task<bool> UpdatePrice(int productId, decimal newPrice)
-        {
-            var product = await _context.Products.FindAsync(productId);
-
-            if (product == null) throw new ProductNotFoundException($"Cannot find a product with id: {productId}");
-
-            product.Price = newPrice;
-
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> UpdateStock(int productId, int addedQuantity)
-        {
-            var product = await _context.Products.FindAsync(productId);
-
-            if (product == null) throw new ProductNotFoundException($"Cannot find a product with id: {productId}");
-
-            product.Stock += addedQuantity;
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task AddViewcount(int productId)
-        {
-            var product = await _context.Products.FindAsync(productId);
-            product.ViewCount += 1;
-            await _context.SaveChangesAsync();
-        }
-
-        public Task<int> AddImages(int productId, List<IFormFile> files)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> RemoveImages(int imageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateImage(int imageId, string caption, bool isDefault)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<ProductImageViewModel>> GetListImage(int productId)
-        {
-            throw new NotImplementedException();
-        }
-
+        // private methods
         private async Task<string> SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -231,30 +241,98 @@ namespace eTweb.Application.Catalog.Products
             return fileName;
         }
 
-        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        public async Task<int> AddImage(int productId, ProductImageCreateRequest request)
         {
-            var product = await _context.Products.FindAsync(productId);
-            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(pt => pt.Id == productId && pt.LanguageId == languageId);
-
-            var productViewModel = new ProductViewModel()
+            var productImage = new ProductImage()
             {
-                Id = product.Id,
-                Price = product.Price,
-                OriginalPrice = product.OriginalPrice,
-                Stock = product.Stock,
-                ViewCount = product.ViewCount,
-                DateCreated = product.DateCreated,
-                Name = productTranslation != null ? productTranslation.Name : null,
-                Description = productTranslation != null ? productTranslation.Description : null,
-                Details = productTranslation != null ? productTranslation.Details : null,
-                SeoAlias = productTranslation != null ? productTranslation.SeoAlias : null,
-                SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
-                SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
-                LanguageId = productTranslation != null ? productTranslation.LanguageId : null,
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                IsDefault = request.IsDefault,
+                SortOrder = request.SortOrder
             };
 
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
 
-            return productViewModel;
+            _context.ProductImages.Add(productImage);
+
+            await _context.SaveChangesAsync();
+
+            return productImage.Id;
+        }
+
+        public async Task<int> UpdateImage(int productId, int imageId, ProductImageUpdateRequest request)
+        {
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+
+            if (productImage == null)
+                throw new ProductNotFoundException($"Cannot find a ProductImage with id: {imageId}");
+
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+
+            _context.ProductImages.Update(productImage);
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> RemoveImage(int productId, int imageId)
+        {
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+
+            if (productImage == null)
+                throw new ProductNotFoundException($"Cannot find a Product Image with id: {imageId}");
+
+            _context.ProductImages.Remove(productImage);
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<ProductImageViewModel> GetImageById(int imageId)
+        {
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+
+            if (productImage == null)
+                throw new ProductNotFoundException($"Cannot find a product image with id: {imageId}");
+
+            var viewModel = new ProductImageViewModel()
+            {
+                Id = productImage.Id,
+                Caption = productImage.Caption,
+                DateCreated = productImage.DateCreated,
+                FileSize = productImage.FileSize,
+                ImagePath = productImage.ImagePath,
+                IsDefault = productImage.IsDefault,
+                ProductId = productImage.ProductId,
+                SortOrder = productImage.SortOrder
+            };
+
+            return viewModel;
+            return viewModel;
+        }
+
+        public async Task<List<ProductImageViewModel>> GetListImages(int productId)
+        {
+            return await _context.ProductImages
+                .Where(pi => pi.ProductId == productId)
+                .Select(x => new ProductImageViewModel()
+                {
+                    Id = x.Id,
+                    Caption = x.Caption,
+                    DateCreated = x.DateCreated,
+                    FileSize = x.FileSize,
+                    ImagePath = x.ImagePath,
+                    IsDefault = x.IsDefault,
+                    ProductId = x.ProductId,
+                    SortOrder = x.SortOrder
+                })
+                .ToListAsync();
         }
     }
 }

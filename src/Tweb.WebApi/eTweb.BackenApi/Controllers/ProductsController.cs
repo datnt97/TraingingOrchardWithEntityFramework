@@ -8,12 +8,13 @@ using Microsoft.Extensions.Logging;
 using eTweb.BackenApi.Models;
 using eTweb.Application.Catalog.Products;
 using eTweb.ViewModels.Catalog.Products;
+using eTweb.ViewModels.Catalog.ProductImages;
 
 namespace eTweb.BackenApi.Controllers
 {
-
     /// <summary>
     /// api/products
+    /// Contains all methods for products
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -29,6 +30,8 @@ namespace eTweb.BackenApi.Controllers
             _publicProductService = publicProductService;
             _manageProductService = manageProductService;
         }
+
+        #region Products
 
         //// localhost:port/products
         //[HttpGet("{languageId}")]
@@ -66,7 +69,7 @@ namespace eTweb.BackenApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm]ProductCreateRequest request)
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -116,10 +119,81 @@ namespace eTweb.BackenApi.Controllers
             return Ok();
         }
 
-        // Images
-        #region Images
-        
-        #endregion
+        #endregion Products
 
+        #region Images
+
+        /// <summary>
+        /// Gets Image by Id
+        /// </summary>
+        /// <param name="imageId"></param>
+        /// <returns>
+        /// The ProductImageViewModel
+        /// </returns>
+        [HttpGet("{productId}/images/{imageId}")]
+        public async Task<IActionResult> GetImageById(int productId, int imageId)
+        {
+            var image = await _manageProductService.GetImageById(imageId);
+            if (image == null)
+                return BadRequest();
+
+            return Ok(image);
+        }
+
+        /// <summary>
+        /// Creates an image of the product.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("{productId}/images")]
+        public async Task<IActionResult> CreateImage(int productId, [FromForm] ProductImageCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var imageId = await _manageProductService.AddImage(productId, request);
+
+            var image = await _manageProductService.GetImageById(imageId);
+            return CreatedAtAction(nameof(GetImageById), new { id = imageId }, image);
+        }
+
+        /// <summary>
+        /// Updates image of the product by id.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("{productId}/images")]
+        public async Task<IActionResult> UpdateImage(int productId, [FromForm] ProductImageUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _manageProductService.UpdateImage(productId, request.Id, request);
+
+            if (result == 0)
+                return BadRequest();
+
+            return Ok();
+        }
+
+        [HttpDelete("{productId}/images/{imageId}")]
+        public async Task<IActionResult> RemoveImage(int productId, int imageId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var affectedResult = await _manageProductService.RemoveImage(productId, imageId);
+
+            if (affectedResult == 0)
+                return BadRequest();
+
+            return Ok();
+        }
+
+        #endregion Images
     }
 }
