@@ -11,13 +11,18 @@ using eTweb.ViewModels.Catalog.Products;
 
 namespace eTweb.BackenApi.Controllers
 {
+
+    /// <summary>
+    /// api/products
+    /// </summary>
     [Route("api/[controller]")]
-    public class ProductController : Controller
+    [ApiController]
+    public class ProductsController : Controller
     {
         private readonly IPubicProductService _publicProductService;
         private readonly IManageProductService _manageProductService;
 
-        public ProductController(
+        public ProductsController(
             IPubicProductService publicProductService,
             IManageProductService manageProductService)
         {
@@ -25,28 +30,34 @@ namespace eTweb.BackenApi.Controllers
             _manageProductService = manageProductService;
         }
 
-        // localhost:port/product
+        //// localhost:port/products
+        //[HttpGet("{languageId}")]
+        //public async Task<ActionResult> Get(string languageId)
+        //{
+        //    var products = await _publicProductService.GetAll(languageId);
+        //    return Ok(products);
+        //}
+
+        /// <summary>
+        /// Get all products on Page
+        /// Ex: localhost:port/products?pageIndex=1&pageSize=10&CategoryId=
+        /// </summary>
+        /// <param name="languageId">String language Id</param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("{languageId}")]
-        public async Task<ActionResult> Get(string languageId)
+        public async Task<IActionResult> GetAllPaging(string languageId, [FromForm] GetPublicProductPagingRequest request)
         {
-            var products = await _publicProductService.GetAll(languageId);
-            return Ok(products);
-        }
-
-        // localhost:port/product/product-paging
-        [HttpGet("product-paging")]
-        public async Task<IActionResult> Get([FromForm] GetPublicProductPagingRequest request)
-        {
-            var products = await _publicProductService.GetAllByCategoryId(request);
+            var products = await _publicProductService.GetAllByCategoryId(languageId, request);
 
             return Ok(products);
         }
 
-        // localhost:port/product/1
-        [HttpGet("{id}/{languageId}")]
-        public async Task<IActionResult> GetById(int id, string languageId)
+        // localhost:port/products/1
+        [HttpGet("{productId}/{languageId}")]
+        public async Task<IActionResult> GetById(int productId, string languageId)
         {
-            var product = await _manageProductService.GetById(id, languageId);
+            var product = await _manageProductService.GetById(productId, languageId);
 
             if (product == null)
                 return BadRequest();
@@ -57,6 +68,10 @@ namespace eTweb.BackenApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm]ProductCreateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var productId = await _manageProductService.Create(request);
 
             if (productId == 0)
@@ -77,26 +92,34 @@ namespace eTweb.BackenApi.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{productId}")]
+        public async Task<IActionResult> Delete(int productId)
         {
-            var affectedResult = await _manageProductService.Delete(id);
+            var affectedResult = await _manageProductService.Delete(productId);
             if (affectedResult == 0)
                 return BadRequest();
 
             return Ok();
         }
 
-        [HttpPut("price/{id}/{newPrice}")]
-        public async Task<IActionResult> UpdatePrice(int id, decimal newPrice)
+        [HttpPatch("price/{productId}/{newPrice}")]
+        public async Task<IActionResult> UpdatePrice(int productId, decimal newPrice)
         {
-            var isSuccessful = await _manageProductService.UpdatePrice(id, newPrice);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var isSuccessful = await _manageProductService.UpdatePrice(productId, newPrice);
             if (!isSuccessful)
                 return BadRequest();
 
             return Ok();
         }
 
+        // Images
+        #region Images
+        
+        #endregion
 
     }
 }
