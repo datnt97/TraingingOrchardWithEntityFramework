@@ -6,18 +6,18 @@ namespace eTweb.Utilities.Exceptions
 {
     using System;
 
-    public class ProductNotFoundException : Exception
+    public class eTwebException : Exception
     {
-        public ProductNotFoundException()
+        public eTwebException()
         {
         }
 
-        public ProductNotFoundException(string message)
+        public eTwebException(string message)
             : base(message)
         {
         }
 
-        public ProductNotFoundException(string message, Exception inner)
+        public eTwebException(string message, Exception inner)
             : base(message, inner)
         {
         }
