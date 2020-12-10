@@ -18,13 +18,14 @@ namespace eTweb.Application.Catalog.Products
             _context = context;
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
+        public async Task<List<ProductViewModel>> GetAll(string languageId)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
-                        select new { p, pt, pic };
+                        //join pic in _context.ProductInCategories on p.Id equals pic.ProductId
+                        //join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == languageId
+                        select new { p, pt/*, pic*/ };
 
             var data = await query
                 .Select(x => new ProductViewModel()
@@ -55,6 +56,7 @@ namespace eTweb.Application.Catalog.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == request.LanguageId
                         select new { p, pt, pic };
 
             // 2. Filter
@@ -63,10 +65,8 @@ namespace eTweb.Application.Catalog.Products
                 query = query.Where(x => x.pic.CategoryId == request.CategoryId);
             }
 
-
             // 3. Paging
             var totalRecord = await query.CountAsync();
-
             var data = await query
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
@@ -89,7 +89,6 @@ namespace eTweb.Application.Catalog.Products
                 .ToListAsync();
 
             // 4. Select and projection
-
             var pagedResult = new PagedResult<ProductViewModel>()
             {
                 Items = data,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eTweb.Application.Catalog.Products;
+using eTweb.Application.Common;
 using eTweb.Data.EF;
 using eTweb.Utilities.Constants;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,8 @@ namespace eTweb.BackenApi
 
             // Declare DI
             services.AddTransient<IPubicProductService, PublicProductService>();
+            services.AddTransient<IManageProductService, ManageProductService>();
+            services.AddTransient<IStorageService, FileStorageService>();
 
 
             services.AddControllersWithViews();
