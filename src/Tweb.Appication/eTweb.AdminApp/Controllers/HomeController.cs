@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using eTweb.AdminApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eTweb.AdminApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,6 +22,7 @@ namespace eTweb.AdminApp.Controllers
 
         public IActionResult Index()
         {
+            var userName = User.Identity.Name;
             return View();
         }
 
