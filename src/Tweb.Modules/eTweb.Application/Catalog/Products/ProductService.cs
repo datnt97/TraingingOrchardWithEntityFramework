@@ -1,5 +1,4 @@
-﻿using eTweb.Application.Dtos;
-using eTweb.Data.EF;
+﻿using eTweb.Data.EF;
 using eTweb.Data.Entities;
 using eTweb.Utilities.Exceptions;
 using System;
@@ -14,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using eTweb.Application.Common;
 using System.Net.Http.Headers;
 using eTweb.ViewModels.Catalog.ProductImages;
+using eTweb.ViewModels.Common;
 
 namespace eTweb.Application.Catalog.Products
 {

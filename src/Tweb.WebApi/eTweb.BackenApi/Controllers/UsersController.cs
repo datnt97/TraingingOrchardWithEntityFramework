@@ -38,7 +38,7 @@ namespace eTweb.BackenApi.Controllers
             return Ok(resultToken);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
@@ -50,6 +50,22 @@ namespace eTweb.BackenApi.Controllers
                 return BadRequest("Register is unsuccessful.");
 
             return Ok();
+        }
+
+        /// <summary>
+        /// localhost:port/api/paging?pageIndex=1&pageSize=10&Keyword=
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetUsersPaging([FromQuery] GetUsersRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.GetUsersPaging(request);
+
+            return Ok(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using eTweb.ViewModels.System.Users;
+﻿using eTweb.ViewModels.Common;
+using eTweb.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,7 @@ namespace eTweb.Application.System
         Task<string> Authencate(LoginRequest request);
 
         Task<bool> Register(RegisterRequest request);
+
+        Task<PagedResult<UserViewModel>> GetUsersPaging(GetUsersRequest request);
     }
 }
