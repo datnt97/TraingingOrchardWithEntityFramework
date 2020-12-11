@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eTweb.ViewModels.System
+namespace eTweb.ViewModels.System.Users
 {
     public class LoginRequest
     {

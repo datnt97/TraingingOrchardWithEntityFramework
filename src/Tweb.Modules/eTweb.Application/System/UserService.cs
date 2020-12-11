@@ -1,5 +1,5 @@
 ﻿using eTweb.Data.Entities;
-using eTweb.ViewModels.System;
+using eTweb.ViewModels.System.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

@@ -5,7 +5,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\eTweb.Utilities\eTweb.Utilities.csproj" />
 	</ItemGroup>
 
 </Project>

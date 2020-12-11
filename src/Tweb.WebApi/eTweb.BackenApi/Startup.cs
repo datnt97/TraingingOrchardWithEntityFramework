@@ -8,6 +8,9 @@ using eTweb.Application.System;
 using eTweb.Data.EF;
 using eTweb.Data.Entities;
 using eTweb.Utilities.Constants;
+using eTweb.ViewModels.System.Users;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,7 +57,19 @@ namespace eTweb.BackenApi
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv
+                    // Automatically register all validators within a particular essembly
+                    .RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+
+            #region Fluent Validation
+
+            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+            services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+
+            #endregion Fluent Validation
+
+            #region Swagger Gen
 
             services.AddSwaggerGen(c =>
             {
@@ -93,6 +108,7 @@ namespace eTweb.BackenApi
                 });
             });
 
+            // Validation token
             string issuer = Configuration.GetValue<string>("Tokens:Issuer");
             string signingKey = Configuration.GetValue<string>("Tokens:Key");
             byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
@@ -119,6 +135,8 @@ namespace eTweb.BackenApi
                         IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes)
                     };
                 });
+
+            #endregion Swagger Gen
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
