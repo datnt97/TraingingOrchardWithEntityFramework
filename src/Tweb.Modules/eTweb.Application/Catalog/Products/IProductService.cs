@@ -1,6 +1,6 @@
-﻿using eTweb.Application.Dtos;
-using eTweb.ViewModels.Catalog.ProductImages;
+﻿using eTweb.ViewModels.Catalog.ProductImages;
 using eTweb.ViewModels.Catalog.Products;
+using eTweb.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace eTweb.Application.Catalog.Products
 {
-    public interface IManageProductService
+    public interface IProductService
     {
         Task<int> Create(ProductCreateRequest request);
 
@@ -45,5 +45,7 @@ namespace eTweb.Application.Catalog.Products
         Task<ProductImageViewModel> GetImageById(int imageId);
 
         Task<List<ProductImageViewModel>> GetListImages(int productId);
+
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
     }
 }

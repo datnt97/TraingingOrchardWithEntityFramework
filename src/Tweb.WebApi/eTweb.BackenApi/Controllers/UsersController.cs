@@ -26,7 +26,7 @@ namespace eTweb.BackenApi.Controllers
 
         [HttpPost("authenticate")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm] LoginRequest request)
+        public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -35,10 +35,10 @@ namespace eTweb.BackenApi.Controllers
             if (string.IsNullOrEmpty(resultToken))
                 return BadRequest("Username or password incorrect.");
 
-            return Ok(new { token = resultToken });
+            return Ok(resultToken);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
@@ -50,6 +50,22 @@ namespace eTweb.BackenApi.Controllers
                 return BadRequest("Register is unsuccessful.");
 
             return Ok();
+        }
+
+        /// <summary>
+        /// localhost:port/api/paging?pageIndex=1&pageSize=10&Keyword=
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetUsersPaging([FromQuery] GetUsersRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.GetUsersPaging(request);
+
+            return Ok(result);
         }
     }
 }

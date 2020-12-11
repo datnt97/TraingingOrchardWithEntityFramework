@@ -48,8 +48,7 @@ namespace eTweb.BackenApi
             IdentityModelEventSource.ShowPII = true;
 
             // Declare DI
-            services.AddTransient<IPubicProductService, PublicProductService>();
-            services.AddTransient<IManageProductService, ManageProductService>();
+            services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IStorageService, FileStorageService>();
 
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();

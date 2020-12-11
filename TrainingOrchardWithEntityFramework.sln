@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Hosts", "3.Hosts", "{F24B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Themes", "4.Themes", "{B6BF1630-7578-4813-A219-FF970B7717A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTweb.AdminApp", "src\Tweb.Appication\eTweb.AdminApp\eTweb.AdminApp.csproj", "{99EF81F7-B82D-4E91-B2C1-08F445F14F60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F006D3E6-AA59-4831-B3E1-34CE04E7C158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99EF81F7-B82D-4E91-B2C1-08F445F14F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99EF81F7-B82D-4E91-B2C1-08F445F14F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99EF81F7-B82D-4E91-B2C1-08F445F14F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99EF81F7-B82D-4E91-B2C1-08F445F14F60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{C6E553A1-F75F-42BC-8A23-AA202F27C9DD} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
 		{F24B1610-80C0-4BD9-9939-AF5DDE1F5AA7} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
 		{B6BF1630-7578-4813-A219-FF970B7717A1} = {D14C9CF6-F7B0-456F-90FC-55D9B2508B1B}
+		{99EF81F7-B82D-4E91-B2C1-08F445F14F60} = {F24B1610-80C0-4BD9-9939-AF5DDE1F5AA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA7EEA56-47A3-4094-8F41-F69DE07F27B6}

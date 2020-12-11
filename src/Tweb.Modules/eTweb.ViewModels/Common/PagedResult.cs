@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eTweb.Application.Dtos
+namespace eTweb.ViewModels.Common
 {
     public class PagedResult<T>
     {
