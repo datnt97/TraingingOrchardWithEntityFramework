@@ -22,15 +22,12 @@ namespace eTweb.BackenApi.Controllers
     [Authorize]
     public class ProductsController : Controller
     {
-        private readonly IPubicProductService _publicProductService;
-        private readonly IManageProductService _manageProductService;
+        private readonly IProductService _productService;
 
         public ProductsController(
-            IPubicProductService publicProductService,
-            IManageProductService manageProductService)
+            IProductService manageProductService)
         {
-            _publicProductService = publicProductService;
-            _manageProductService = manageProductService;
+            _productService = manageProductService;
         }
 
         #region Products
@@ -53,7 +50,7 @@ namespace eTweb.BackenApi.Controllers
         [HttpGet("{languageId}")]
         public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery] GetPublicProductPagingRequest request)
         {
-            var products = await _publicProductService.GetAllByCategoryId(languageId, request);
+            var products = await _productService.GetAllByCategoryId(languageId, request);
 
             return Ok(products);
         }
@@ -62,7 +59,7 @@ namespace eTweb.BackenApi.Controllers
         [HttpGet("{productId}/{languageId}")]
         public async Task<IActionResult> GetById(int productId, string languageId)
         {
-            var product = await _manageProductService.GetById(productId, languageId);
+            var product = await _productService.GetById(productId, languageId);
 
             if (product == null)
                 return BadRequest();
@@ -77,12 +74,12 @@ namespace eTweb.BackenApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await _manageProductService.Create(request);
+            var productId = await _productService.Create(request);
 
             if (productId == 0)
                 return BadRequest();
 
-            var product = await _manageProductService.GetById(productId, request.LanguageId);
+            var product = await _productService.GetById(productId, request.LanguageId);
 
             return CreatedAtAction(nameof(GetById), new { id = productId }, product);
         }
@@ -90,7 +87,7 @@ namespace eTweb.BackenApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
-            var affectedResult = await _manageProductService.Update(request);
+            var affectedResult = await _productService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
 
@@ -100,7 +97,7 @@ namespace eTweb.BackenApi.Controllers
         [HttpDelete("{productId}")]
         public async Task<IActionResult> Delete(int productId)
         {
-            var affectedResult = await _manageProductService.Delete(productId);
+            var affectedResult = await _productService.Delete(productId);
             if (affectedResult == 0)
                 return BadRequest();
 
@@ -114,7 +111,7 @@ namespace eTweb.BackenApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var isSuccessful = await _manageProductService.UpdatePrice(productId, newPrice);
+            var isSuccessful = await _productService.UpdatePrice(productId, newPrice);
             if (!isSuccessful)
                 return BadRequest();
 
@@ -135,7 +132,7 @@ namespace eTweb.BackenApi.Controllers
         [HttpGet("{productId}/images/{imageId}")]
         public async Task<IActionResult> GetImageById(int productId, int imageId)
         {
-            var image = await _manageProductService.GetImageById(imageId);
+            var image = await _productService.GetImageById(imageId);
             if (image == null)
                 return BadRequest();
 
@@ -156,9 +153,9 @@ namespace eTweb.BackenApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var imageId = await _manageProductService.AddImage(productId, request);
+            var imageId = await _productService.AddImage(productId, request);
 
-            var image = await _manageProductService.GetImageById(imageId);
+            var image = await _productService.GetImageById(imageId);
             return CreatedAtAction(nameof(GetImageById), new { id = imageId }, image);
         }
 
@@ -174,7 +171,7 @@ namespace eTweb.BackenApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _manageProductService.UpdateImage(productId, request.Id, request);
+            var result = await _productService.UpdateImage(productId, request.Id, request);
 
             if (result == 0)
                 return BadRequest();
@@ -188,7 +185,7 @@ namespace eTweb.BackenApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var affectedResult = await _manageProductService.RemoveImage(productId, imageId);
+            var affectedResult = await _productService.RemoveImage(productId, imageId);
 
             if (affectedResult == 0)
                 return BadRequest();
