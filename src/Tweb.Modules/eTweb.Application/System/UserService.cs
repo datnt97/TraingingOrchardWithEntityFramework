@@ -35,7 +35,7 @@ namespace eTweb.Application.System
             _config = config;
         }
 
-        public async Task<string> Authencate(LoginRequest request)
+        public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
@@ -43,7 +43,7 @@ namespace eTweb.Application.System
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
-            if (!result.Succeeded) return null;
+            if (!result.Succeeded) return new ApiErrorResult<string>("Đăng nhập không đúng");
 
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
@@ -65,10 +65,31 @@ namespace eTweb.Application.System
                 signingCredentials: creds
                 );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var stringToken = new JwtSecurityTokenHandler().WriteToken(token);
+            return new ApiSuccessResult<string>(stringToken);
         }
 
-        public async Task<PagedResult<UserViewModel>> GetUsersPaging(GetUsersRequest request)
+        public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+                return new ApiErrorResult<UserViewModel>("Tên tài khoản không tồn tại");
+
+            var viewModel = new UserViewModel()
+            {
+                Id = user.Id,
+                Dob = user.Dob,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return new ApiSuccessResult<UserViewModel>(viewModel);
+        }
+
+        public async Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUsersRequest request)
         {
             // 1. Select
             var query = _userManager.Users;
@@ -109,12 +130,21 @@ namespace eTweb.Application.System
                 TotalRecord = totalRecord
             };
 
-            return pagedResult;
+            return new ApiSuccessResult<PagedResult<UserViewModel>>(pagedResult);
         }
 
-        public async Task<bool> Register(RegisterRequest request)
+        public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
-            var user = new AppUser()
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user != null)
+            {
+                return new ApiErrorResult<bool>("Tên tài khoản đã tồn tại");
+            }
+
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
+                return new ApiErrorResult<bool>("Email đã tồn tại");
+
+            user = new AppUser()
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -126,9 +156,30 @@ namespace eTweb.Application.System
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
-                return false;
+                return new ApiErrorResult<bool>("Đăng ký không thành công");
 
-            return true;
+            return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id))
+            {
+                return new ApiErrorResult<bool>("Email đã tồn tại");
+            }
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.PhoneNumber = request.PhoneNumber;
+            user.Dob = request.Dob;
+            user.Email = request.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return new ApiErrorResult<bool>("Cập nhật không thành công");
+
+            return new ApiSuccessResult<bool>();
         }
     }
 }

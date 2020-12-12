@@ -31,11 +31,11 @@ namespace eTweb.BackenApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await _userService.Authencate(request);
-            if (string.IsNullOrEmpty(resultToken))
+            var result = await _userService.Authencate(request);
+            if (string.IsNullOrEmpty(result.ResultObj))
                 return BadRequest("Username or password incorrect.");
 
-            return Ok(resultToken);
+            return Ok(result.ResultObj);
         }
 
         [HttpPost]
@@ -46,7 +46,7 @@ namespace eTweb.BackenApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Register(request);
-            if (!result)
+            if (!result.IsSuccessed)
                 return BadRequest("Register is unsuccessful.");
 
             return Ok();
@@ -63,7 +63,37 @@ namespace eTweb.BackenApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _userService.GetUsersPaging(request);
+            var users = await _userService.GetUsersPaging(request);
+
+            return Ok(users);
+        }
+
+        /// <summary>
+        /// Put: localhost:port/api/users/id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Register(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Get: localhost:port/api/users/id
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var result = await _userService.GetUserById(id);
 
             return Ok(result);
         }
