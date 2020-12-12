@@ -12,5 +12,7 @@ namespace eTweb.AdminApp.Services
         Task<string> Authenticate(LoginRequest request);
 
         Task<PagedResult<UserViewModel>> GetUsersPaging(GetUsersRequest request);
+
+        Task<bool> Register(RegisterRequest register);
     }
 }
