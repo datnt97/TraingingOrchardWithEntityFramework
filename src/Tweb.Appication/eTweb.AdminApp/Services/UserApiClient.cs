@@ -58,5 +58,18 @@ namespace eTweb.AdminApp.Services
 
             return users;
         }
+
+        public async Task<bool> Register(RegisterRequest register)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            var json = JsonConvert.SerializeObject(register);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var httpResponse = await client.PostAsync("/api/users/", httpContent);
+
+            return httpResponse.IsSuccessStatusCode;
+        }
     }
 }
