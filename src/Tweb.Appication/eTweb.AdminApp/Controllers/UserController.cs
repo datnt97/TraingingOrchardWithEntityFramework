@@ -47,6 +47,7 @@ namespace eTweb.AdminApp.Controllers
             };
 
             var data = await _userApiClient.GetUsersPaging(request);
+            ViewBag.KeyWord = keyword;
 
             return View(data.ResultObj);
         }
