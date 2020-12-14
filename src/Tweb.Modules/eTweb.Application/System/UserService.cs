@@ -127,7 +127,9 @@ namespace eTweb.Application.System
             var pagedResult = new PagedResult<UserViewModel>()
             {
                 Items = data,
-                TotalRecord = totalRecord
+                TotalRecords = totalRecord,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
             };
 
             return new ApiSuccessResult<PagedResult<UserViewModel>>(pagedResult);
