@@ -18,5 +18,7 @@ namespace eTweb.AdminApp.Services
         Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
 
         Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
+
+        Task<ApiResult<bool>> Delete(Guid id);
     }
 }

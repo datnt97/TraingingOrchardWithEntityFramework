@@ -18,5 +18,7 @@ namespace eTweb.Application.System
         Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUsersRequest request);
 
         Task<ApiResult<UserViewModel>> GetUserById(Guid id);
+
+        Task<ApiResult<bool>> Delete(Guid Id);
     }
 }

@@ -97,5 +97,19 @@ namespace eTweb.BackenApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Delete(id);
+
+            if (!result.IsSuccessed)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

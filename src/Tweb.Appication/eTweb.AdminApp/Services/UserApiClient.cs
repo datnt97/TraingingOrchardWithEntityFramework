@@ -47,6 +47,23 @@ namespace eTweb.AdminApp.Services
             ;
         }
 
+        public async Task<ApiResult<bool>> Delete(Guid id)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var httpResponse = await client.DeleteAsync($"/api/users/{id}");
+            var body = await httpResponse.Content.ReadAsStringAsync();
+
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+
+            return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
+        }
+
         public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
