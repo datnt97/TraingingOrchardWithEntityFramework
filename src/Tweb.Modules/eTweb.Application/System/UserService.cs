@@ -69,6 +69,17 @@ namespace eTweb.Application.System
             return new ApiSuccessResult<string>(stringToken);
         }
 
+        public async Task<ApiResult<bool>> Delete(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+                return new ApiErrorResult<bool>("Người dùng không tồn tại");
+
+            await _userManager.DeleteAsync(user);
+            return new ApiSuccessResult<bool>();
+        }
+
         public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
