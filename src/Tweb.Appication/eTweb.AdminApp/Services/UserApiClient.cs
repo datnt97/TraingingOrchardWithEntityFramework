@@ -81,9 +81,10 @@ namespace eTweb.AdminApp.Services
 
             var data = await httpResponse.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<PagedResult<UserViewModel>>(data);
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<PagedResult<UserViewModel>>>(data);
 
-            return new ApiSuccessResult<PagedResult<UserViewModel>>(users);
+            return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserViewModel>>>(data);
         }
 
         public async Task<ApiResult<bool>> RegisterUser(RegisterRequest request)

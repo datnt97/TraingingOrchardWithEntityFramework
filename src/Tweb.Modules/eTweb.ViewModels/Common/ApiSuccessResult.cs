@@ -8,6 +8,7 @@ namespace eTweb.ViewModels.Common
     {
         public ApiSuccessResult(T resultObj)
         {
+            IsSuccessed = true;
             ResultObj = resultObj;
         }
 

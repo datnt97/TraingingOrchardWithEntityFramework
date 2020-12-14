@@ -32,10 +32,10 @@ namespace eTweb.BackenApi.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Authencate(request);
-            if (string.IsNullOrEmpty(result.ResultObj))
-                return BadRequest("Username or password incorrect.");
+            if (!result.IsSuccessed)
+                return BadRequest(result);
 
-            return Ok(result.ResultObj);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -47,7 +47,7 @@ namespace eTweb.BackenApi.Controllers
 
             var result = await _userService.Register(request);
             if (!result.IsSuccessed)
-                return BadRequest("Register is unsuccessful.");
+                return BadRequest(result);
 
             return Ok();
         }

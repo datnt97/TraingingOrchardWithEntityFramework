@@ -23,6 +23,7 @@ namespace eTweb.AdminApp.Controllers
     /// </summary>
     //[Route("user/[controller]")]
     //[AllowAnonymous]
+    [Route("User/[action]")]
     public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
@@ -102,13 +103,13 @@ namespace eTweb.AdminApp.Controllers
             return RedirectToAction("Error", "Home");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(UserUpdateRequest request)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> Edit(Guid id, UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _userApiClient.UpdateUser(request.Id, request);
+            var result = await _userApiClient.UpdateUser(id, request);
             if (result.IsSuccessed)
                 return RedirectToAction("Index");
 
