@@ -7,6 +7,7 @@ using eTweb.AdminApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,7 @@ namespace eTweb.AdminApp
 
             // Declare DI
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             // Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

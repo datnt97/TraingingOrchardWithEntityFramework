@@ -9,10 +9,14 @@ namespace eTweb.Application.System
 {
     public interface IUserService
     {
-        Task<string> Authencate(LoginRequest request);
+        Task<ApiResult<string>> Authencate(LoginRequest request);
 
-        Task<bool> Register(RegisterRequest request);
+        Task<ApiResult<bool>> Register(RegisterRequest request);
 
-        Task<PagedResult<UserViewModel>> GetUsersPaging(GetUsersRequest request);
+        Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request);
+
+        Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUsersRequest request);
+
+        Task<ApiResult<UserViewModel>> GetUserById(Guid id);
     }
 }

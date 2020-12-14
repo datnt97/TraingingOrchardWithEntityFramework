@@ -1,5 +1,6 @@
 ﻿using eTweb.ViewModels.Common;
 using eTweb.ViewModels.System.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -16,16 +17,19 @@ namespace eTweb.AdminApp.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserApiClient(
             IHttpClientFactory httpClientFactory,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string> Authenticate(LoginRequest request)
+        public async Task<ApiResult<string>> Authenticate(LoginRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
@@ -34,17 +38,40 @@ namespace eTweb.AdminApp.Services
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             var httpResponse = await client.PostAsync("/api/users/authenticate", httpContent);
+            var result = await httpResponse.Content.ReadAsStringAsync();
 
-            var tokens = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<string>>(result);
 
-            return tokens;
+            return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(result);
+            ;
         }
 
-        public async Task<PagedResult<UserViewModel>> GetUsersPaging(GetUsersRequest request)
+        public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
         {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var httpResponse = await client.GetAsync($"/api/users/{id}");
+            var result = await httpResponse.Content.ReadAsStringAsync();
+
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<UserViewModel>>(result);
+
+            return JsonConvert.DeserializeObject<ApiSuccessResult<UserViewModel>>(result);
+        }
+
+        public async Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUsersRequest request)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var httpResponse = await client.GetAsync(
                     $"/api/users/paging?" +
@@ -54,22 +81,46 @@ namespace eTweb.AdminApp.Services
 
             var data = await httpResponse.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<PagedResult<UserViewModel>>(data);
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<PagedResult<UserViewModel>>>(data);
 
-            return users;
+            return JsonConvert.DeserializeObject<ApiSuccessResult<PagedResult<UserViewModel>>>(data);
         }
 
-        public async Task<bool> Register(RegisterRequest register)
+        public async Task<ApiResult<bool>> RegisterUser(RegisterRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
-            var json = JsonConvert.SerializeObject(register);
+            var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             var httpResponse = await client.PostAsync("/api/users/", httpContent);
+            var result = await httpResponse.Content.ReadAsStringAsync();
 
-            return httpResponse.IsSuccessStatusCode;
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var httpResponse = await client.PutAsync($"/api/users/{id}", httpContent);
+
+            var result = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
         }
     }
 }
