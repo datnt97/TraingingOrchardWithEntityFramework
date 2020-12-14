@@ -225,7 +225,9 @@ namespace eTweb.Application.Catalog.Products
             // 4. Select and projection
             var pagedResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
+                TotalRecords = totalRow,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
                 Items = data
             };
 
@@ -314,7 +316,6 @@ namespace eTweb.Application.Catalog.Products
             };
 
             return viewModel;
-            return viewModel;
         }
 
         public async Task<List<ProductImageViewModel>> GetListImages(int productId)
@@ -378,7 +379,9 @@ namespace eTweb.Application.Catalog.Products
             var pagedResult = new PagedResult<ProductViewModel>()
             {
                 Items = data,
-                TotalRecord = totalRecord
+                TotalRecords = totalRecord,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex
             };
 
             return pagedResult;
