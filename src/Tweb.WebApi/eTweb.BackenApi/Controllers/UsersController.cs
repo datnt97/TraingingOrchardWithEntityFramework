@@ -49,7 +49,7 @@ namespace eTweb.BackenApi.Controllers
             if (!result.IsSuccessed)
                 return BadRequest(result);
 
-            return Ok();
+            return Ok(result);
         }
 
         /// <summary>

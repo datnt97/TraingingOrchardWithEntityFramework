@@ -47,7 +47,11 @@ namespace eTweb.AdminApp.Controllers
             };
 
             var data = await _userApiClient.GetUsersPaging(request);
-            ViewBag.KeyWord = keyword;
+            ViewBag.Keyword = keyword;
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["result"];
+            }
 
             return View(data.ResultObj);
         }
@@ -74,7 +78,10 @@ namespace eTweb.AdminApp.Controllers
 
             var result = await _userApiClient.RegisterUser(request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Tạo mới người dùng thành công!";
                 return RedirectToAction("Index");
+            }
 
             ModelState.AddModelError("", result.Message);
             return View(request);
@@ -112,7 +119,10 @@ namespace eTweb.AdminApp.Controllers
 
             var result = await _userApiClient.UpdateUser(id, request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật người dùng thành công!";
                 return RedirectToAction("Index");
+            }
 
             ModelState.AddModelError("", result.Message);
 
@@ -148,7 +158,10 @@ namespace eTweb.AdminApp.Controllers
             var result = await _userApiClient.Delete(request.Id);
 
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Xóa người dùng thành công!";
                 return RedirectToAction("Index");
+            }
 
             ModelState.AddModelError("", result.Message);
             return View(request);

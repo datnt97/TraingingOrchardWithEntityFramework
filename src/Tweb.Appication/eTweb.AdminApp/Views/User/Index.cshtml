@@ -7,6 +7,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            $("#msgAlert").fadeOut("slow");
+        }, 2000);
+    </script>
+}
+
 <div class="container-fluid">
     <h1 class="mt-4">Danh sách người dùng</h1>
     <ol class="breadcrumb mb-4">
@@ -24,14 +32,14 @@
                     <form asp-action="Index" method="get">
                         <div class="row">
                             <div class="col-md-9">
-                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" placeholder="Từ khóa"/>
                             </div>
                             <div class="col-md-3">
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                                     <i class="fas fa-search"></i>
                                     Tìm
                                 </button>
-                                <button class="btn btn-outline-secondary my-2 my-sm-0" onclick="window.location.href='/User/Index'">
+                                <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="window.location.href='/User/Index'">
                                     <i class="fas fa-trash"></i>
                                     Reset
                                 </button>
@@ -42,6 +50,12 @@
             </div>
         </div>
         <div class="card-body">
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-success" role="alert">
+                    @ViewBag.SuccessMsg
+                </div>
+            }
             <div class="table-responsive">
                 <table class="table table-bordered" @*id="dataTable"*@ width="100%" cellspacing="0">
                     <thead>
