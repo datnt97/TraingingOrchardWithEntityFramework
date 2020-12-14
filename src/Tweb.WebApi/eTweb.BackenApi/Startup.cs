@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eTweb.Application.Catalog.Products;
 using eTweb.Application.Common;
 using eTweb.Application.System;
+using eTweb.Application.System.Languages;
 using eTweb.Data.EF;
 using eTweb.Data.Entities;
 using eTweb.Utilities.Constants;
@@ -55,6 +56,7 @@ namespace eTweb.BackenApi
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ILanguageService, LanguageService>();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv

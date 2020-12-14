@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using eTweb.AdminApp.Services;
+using eTweb.Utilities.Constants;
 using eTweb.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -57,7 +58,8 @@ namespace eTweb.AdminApp.Controllers
                 IsPersistent = true
             };
 
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString(SystemConstant.AppSettings.DefaultLanguageId, _configuration[SystemConstant.AppSettings.DefaultLanguageId]);
+            HttpContext.Session.SetString(SystemConstant.AppSettings.Token, token);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
