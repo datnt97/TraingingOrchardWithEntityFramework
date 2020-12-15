@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Tweb.Modules\eTweb.Utilities\eTweb.Utilities.csproj" />
     <ProjectReference Include="..\..\Tweb.Modules\eTweb.ViewModels\eTweb.ViewModels.csproj" />
   </ItemGroup>
 

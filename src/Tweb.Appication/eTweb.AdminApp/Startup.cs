@@ -38,6 +38,7 @@ namespace eTweb.AdminApp
 
             // Declare DI
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             // Authentication

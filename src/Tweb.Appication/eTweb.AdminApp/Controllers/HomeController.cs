@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using eTweb.AdminApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using eTweb.Utilities.Constants;
+using Microsoft.AspNetCore.Http;
 
 namespace eTweb.AdminApp.Controllers
 {
@@ -34,6 +36,14 @@ namespace eTweb.AdminApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public IActionResult Language(NavigationViewModel request)
+        {
+            HttpContext.Session.SetString(SystemConstant.AppSettings.DefaultLanguageId, request.CurrentLanguageId);
+
+            return RedirectToAction("Index");
         }
     }
 }
