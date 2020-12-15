@@ -113,9 +113,10 @@
                                         @Html.DisplayFor(modelItem => item.Password)
                                     </td>*@
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, null) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, null) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, null)
+                                    @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, null) |
+                                    @Html.ActionLink("Xem", "Details", new { id = item.Id }, null) |
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, null) |
+                                    @Html.ActionLink("Gán quyền", "RoleAssign", new { id = item.Id }, null)
                                 </td>
                             </tr>
                         }

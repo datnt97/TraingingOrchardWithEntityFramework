@@ -1,4 +1,5 @@
 ﻿using eTweb.ViewModels.Common;
+using eTweb.ViewModels.System.Roles;
 using eTweb.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,14 @@ namespace eTweb.AdminApp.Services
 
         Task<ApiResult<PagedResult<UserViewModel>>> GetUsersPaging(GetUsersRequest request);
 
-        Task<ApiResult<UserViewModel>> GetUserById(Guid id);
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
 
         Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
 
         Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
 
         Task<ApiResult<bool>> Delete(Guid id);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

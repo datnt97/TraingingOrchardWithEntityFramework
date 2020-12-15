@@ -1,6 +1,7 @@
 ﻿using eTweb.Data.EF;
 using eTweb.Data.Entities;
 using eTweb.ViewModels.Common;
+using eTweb.ViewModels.System.Roles;
 using eTweb.ViewModels.System.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,41 @@ namespace eTweb.Application.System
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+        }
+
+        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+                return new ApiErrorResult<bool>("Tài khoản không tồn tại.");
+
+            var removedRoles = request.Roles
+                .Where(x => x.Selected == false)
+                    .Select(x => x.Name)
+                    .ToList();
+
+            foreach (var roleName in removedRoles)
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) == true)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, roleName);
+                }
+            }
+
+            var addedRoles = request.Roles
+                .Where(x => x.Selected)
+                    .Select(x => x.Name)
+                    .ToList();
+            foreach (var roleName in addedRoles)
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) == false)
+                {
+                    await _userManager.AddToRoleAsync(user, roleName);
+                }
+            }
+
+            return new ApiSuccessResult<bool>();
         }
 
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
@@ -80,9 +116,10 @@ namespace eTweb.Application.System
             return new ApiSuccessResult<bool>();
         }
 
-        public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
+        public async Task<ApiResult<UserViewModel>> GetById(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
+            var roles = await _userManager.GetRolesAsync(user);
 
             if (user == null)
                 return new ApiErrorResult<UserViewModel>("Tên tài khoản không tồn tại");
@@ -94,7 +131,8 @@ namespace eTweb.Application.System
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                Roles = roles
             };
 
             return new ApiSuccessResult<UserViewModel>(viewModel);

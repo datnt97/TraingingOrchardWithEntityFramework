@@ -40,6 +40,7 @@ namespace eTweb.AdminApp
             services.AddTransient<IUserApiClient, UserApiClient>();
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IRoleApiClient, RoleApiClient>();
 
             // Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

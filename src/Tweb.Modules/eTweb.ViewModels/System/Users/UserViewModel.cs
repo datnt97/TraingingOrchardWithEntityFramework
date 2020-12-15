@@ -33,5 +33,7 @@ namespace eTweb.ViewModels.System.Users
         [Display(Name = "Mật khẩu")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public IList<string> Roles { get; set; }
     }
 }
