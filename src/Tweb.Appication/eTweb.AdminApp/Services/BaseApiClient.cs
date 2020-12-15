@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace eTweb.AdminApp.Services
@@ -44,6 +45,74 @@ namespace eTweb.AdminApp.Services
             }
 
             return JsonConvert.DeserializeObject<TResponse>(body);
+        }
+
+        protected async Task<TResponse> PostAsync<TResponse, TRequest>(string url, TRequest request)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstant.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+
+            client.BaseAddress = new Uri(_configuration[SystemConstant.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(SystemConstant.AppSettings.Bearer, sessions);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var httpResponse = await client.PostAsync(url, httpContent);
+            var body = await httpResponse.Content.ReadAsStringAsync();
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var myDeserializeObjList = (TResponse)JsonConvert.DeserializeObject(body, typeof(TResponse));
+                return myDeserializeObjList;
+            }
+
+            return JsonConvert.DeserializeObject<TResponse>(body);
+        }
+
+        protected async Task<TResponse> DeleteAsync<TResponse>(string url)
+        {
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstant.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(SystemConstant.AppSettings.Bearer, sessions);
+            client.BaseAddress = new Uri(_configuration[SystemConstant.AppSettings.BaseAddress]);
+
+            var httpResponse = await client.DeleteAsync(url);
+            var body = await httpResponse.Content.ReadAsStringAsync();
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<TResponse>(body);
+            }
+
+            return JsonConvert.DeserializeObject<TResponse>(body);
+        }
+
+        protected async Task<TResponse> PutAsync<TResponse, TRequest>(string url, TRequest request)
+        {
+            var sessions = _httpContextAccessor
+                .HttpContext
+                .Session
+                .GetString(SystemConstant.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstant.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue
+                (
+                    SystemConstant.AppSettings.Bearer,
+                    sessions
+                );
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var httpResponse = await client.PutAsync(url, httpContent);
+
+            var result = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<TResponse>(result);
+
+            return JsonConvert.DeserializeObject<TResponse>(result);
         }
     }
 }
