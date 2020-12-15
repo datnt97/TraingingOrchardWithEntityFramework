@@ -55,6 +55,13 @@ namespace eTweb.BackenApi.Controllers
             return Ok(products);
         }
 
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
+        {
+            var products = await _productService.GetAllPaging(request);
+            return Ok(products);
+        }
+
         // localhost:port/products/1
         [HttpGet("{productId}/{languageId}")]
         public async Task<IActionResult> GetById(int productId, string languageId)
@@ -68,7 +75,7 @@ namespace eTweb.BackenApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
+        public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
             {

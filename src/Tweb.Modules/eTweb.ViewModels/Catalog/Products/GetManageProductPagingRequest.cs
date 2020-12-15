@@ -9,6 +9,6 @@ namespace eTweb.ViewModels.Catalog.Products
     {
         public List<int> CategoryIds { get; set; }
         public string Keyword { get; set; }
-
+        public string LanguageId { get; set; }
     }
 }

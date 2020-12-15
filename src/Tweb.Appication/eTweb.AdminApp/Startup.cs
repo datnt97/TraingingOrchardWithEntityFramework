@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eTweb.AdminApp.Services;
+using eTweb.ViewModels.Catalog.Products;
 using eTweb.ViewModels.System.Users;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -34,13 +35,16 @@ namespace eTweb.AdminApp
             services.AddHttpClient();
 
             services.AddControllersWithViews()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+                .AddFluentValidation(fv => fv
+                    .RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()
+                    .RegisterValidatorsFromAssemblyContaining<ProductCreateRequestValidator>());
 
             // Declare DI
             services.AddTransient<IUserApiClient, UserApiClient>();
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IRoleApiClient, RoleApiClient>();
+            services.AddTransient<IProductApiClient, ProductApiClient>();
 
             // Authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
