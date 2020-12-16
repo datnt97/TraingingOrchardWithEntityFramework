@@ -1,4 +1,5 @@
 ﻿using eTweb.ViewModels.Common;
+using eTweb.ViewModels.System.Roles;
 using eTweb.ViewModels.System.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +37,7 @@ namespace eTweb.AdminApp.Services
             return await DeleteAsync<ApiResult<bool>>($"/api/users/{id}");
         }
 
-        public async Task<ApiResult<UserViewModel>> GetUserById(Guid id)
+        public async Task<ApiResult<UserViewModel>> GetById(Guid id)
         {
             return await GetAsync<ApiResult<UserViewModel>>($"/api/users/{id}");
         }
@@ -58,6 +59,11 @@ namespace eTweb.AdminApp.Services
         public async Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request)
         {
             return await PutAsync<ApiResult<bool>, UserUpdateRequest>($"/api/users/{id}", request);
+        }
+
+        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request)
+        {
+            return await PutAsync<ApiResult<bool>, RoleAssignRequest>($"/api/users/{request.Id}/roles/", request);
         }
     }
 }

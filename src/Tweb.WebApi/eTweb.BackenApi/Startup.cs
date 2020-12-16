@@ -6,9 +6,11 @@ using eTweb.Application.Catalog.Products;
 using eTweb.Application.Common;
 using eTweb.Application.System;
 using eTweb.Application.System.Languages;
+using eTweb.Application.System.Roles;
 using eTweb.Data.EF;
 using eTweb.Data.Entities;
 using eTweb.Utilities.Constants;
+using eTweb.ViewModels.Catalog.Products;
 using eTweb.ViewModels.System.Users;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -57,11 +59,13 @@ namespace eTweb.BackenApi
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv
                     // Automatically register all validators within a particular essembly
-                    .RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+                    .RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>()
+                    .RegisterValidatorsFromAssemblyContaining<ProductCreateRequestValidator>());
 
             #region Fluent Validation
 

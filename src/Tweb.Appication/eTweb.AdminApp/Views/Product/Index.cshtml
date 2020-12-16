@@ -1,9 +1,9 @@
 ﻿@using eTweb.ViewModels.Common
-@using eTweb.ViewModels.System.Users
-@model PagedResult<UserViewModel>
+@using eTweb.ViewModels.Catalog.Products
+@model PagedResult<ProductViewModel>
 
 @{
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = "Sản phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,30 +16,30 @@
 }
 
 <div class="container-fluid">
-    <h1 class="mt-4">Danh sách người dùng</h1>
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách người dùng</li>
+        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
     </ol>
 
     <div class="card mb-4">
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6 col-xs-12">
-                    <a class="btn btn-success" asp-action="Create" asp-controller="User">Tạo mới</a>
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <form asp-action="Index" method="get">
                         <div class="row">
                             <div class="col-md-9">
-                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" placeholder="Từ khóa"/>
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" placeholder="Từ khóa" />
                             </div>
                             <div class="col-md-3">
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                                     <i class="fas fa-search"></i>
                                     Tìm
                                 </button>
-                                <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="window.location.href='/User/Index'">
+                                <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="window.location.href='/Product/Index'">
                                     <i class="fas fa-trash"></i>
                                     Reset
                                 </button>
@@ -60,26 +60,23 @@
                 <table class="table table-bordered" @*id="dataTable"*@ width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            @*<th>
-                                    Id
-                                </th>*@
                             <th>
-                                Tên
+                                Mã sản phẩm
                             </th>
                             <th>
-                                Họ
+                                Giá nhập
                             </th>
                             <th>
-                                Ngày sinh
+                                Giá bán
                             </th>
                             <th>
-                                Email
+                                Tồn kho
                             </th>
                             <th>
-                                Số điện thoại
+                                Ngày tạo
                             </th>
                             <th>
-                                Tên tài khoản
+                                Tên sản phẩm
                             </th>
                             <th></th>
                         </tr>
@@ -88,35 +85,28 @@
                         @foreach (var item in Model.Items)
                         {
                             <tr>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.Id)
-                                    </td>*@
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.FirstName)
+                                    @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.LastName)
+                                    @Html.DisplayFor(modelItem => item.OriginalPrice)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Dob)
+                                    @Html.DisplayFor(modelItem => item.Price)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Email)
+                                    @Html.DisplayFor(modelItem => item.Stock)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.UserName)
+                                    @Html.DisplayFor(modelItem => item.Name)
                                 </td>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.Password)
-                                    </td>*@
                                 <td>
                                     @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, null) |
                                     @Html.ActionLink("Xem", "Details", new { id = item.Id }, null) |
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, null) |
-                                    @Html.ActionLink("Gán quyền", "RoleAssign", new { id = item.Id }, null)
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, null)
                                 </td>
                             </tr>
                         }

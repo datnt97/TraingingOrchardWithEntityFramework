@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eTweb.Application.System;
+using eTweb.ViewModels.System.Roles;
 using eTweb.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -93,7 +94,7 @@ namespace eTweb.BackenApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            var result = await _userService.GetUserById(id);
+            var result = await _userService.GetById(id);
 
             return Ok(result);
         }
@@ -110,6 +111,24 @@ namespace eTweb.BackenApi.Controllers
                 return BadRequest(result);
 
             return Ok(result);
+        }
+
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> AssignRole(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.RoleAssign(id, request);
+
+            if (result.IsSuccessed)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
     }
 }
